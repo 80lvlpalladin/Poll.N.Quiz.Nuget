@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <InternalsVisibleTo Include="Poll.N.Quiz.NuGet.IntegrationTests" />
+      <InternalsVisibleTo Include="Poll.N.Quiz.Settings.Projection.WriteOnly.UnitTests" />
+      <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+      <PackageReference Include="StackExchange.Redis"/>
+    </ItemGroup>
+
+
+</Project>

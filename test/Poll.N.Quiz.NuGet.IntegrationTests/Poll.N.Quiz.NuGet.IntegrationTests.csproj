@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <PackageReference Include="Bogus"/>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing"/>
+      <PackageReference Include="Testcontainers"/>
+      <PackageReference Include="Testcontainers.MongoDb"/>
+      <PackageReference Include="Testcontainers.Redis"/>
+
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.EventStore.WriteOnly\Poll.N.Quiz.Settings.EventStore.WriteOnly.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Messaging.Contracts\Poll.N.Quiz.Settings.Messaging.Contracts.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.EventStore.ReadOnly\Poll.N.Quiz.Settings.EventStore.ReadOnly.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.ReadOnly\Poll.N.Quiz.Settings.Projection.ReadOnly.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.WriteOnly\Poll.N.Quiz.Settings.Projection.WriteOnly.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props" />
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.0.3-dev</Version>
+    <Authors>80lvlpalladin</Authors>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+      <InternalsVisibleTo Include="Poll.N.Quiz.NuGet.IntegrationTests" />
+
+      <PackageReference Include="MongoDB.Driver"/>
+
+      <ProjectReference Include="..\Poll.N.Quiz.Settings.Messaging.Contracts\Poll.N.Quiz.Settings.Messaging.Contracts.csproj" />
+  </ItemGroup>
+</Project>

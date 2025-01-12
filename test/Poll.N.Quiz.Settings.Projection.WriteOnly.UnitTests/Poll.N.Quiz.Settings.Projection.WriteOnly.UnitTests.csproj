@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.WriteOnly\Poll.N.Quiz.Settings.Projection.WriteOnly.csproj" />
+    </ItemGroup>
+
+</Project>
