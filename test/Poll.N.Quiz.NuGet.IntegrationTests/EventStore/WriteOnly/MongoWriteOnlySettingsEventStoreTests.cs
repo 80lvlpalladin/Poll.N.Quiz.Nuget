@@ -2,9 +2,9 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Poll.N.Quiz.Settings.EventStore.WriteOnly.Internal;
-using Poll.N.Quiz.Settings.Messaging.Contracts;
-using Poll.N.Quiz.Settings.Messaging.Contracts.Extensions;
-using Poll.N.Quiz.Settings.Messaging.Contracts.Internal;
+using Poll.N.Quiz.Settings.Domain.Extensions;
+using Poll.N.Quiz.Settings.Domain.Internal;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.EventStore.WriteOnly;
 
@@ -159,7 +159,7 @@ public class MongoWriteOnlySettingsEventStoreTests()
             allEvents[..^1].Select(se => se.ToBsonDocument()));
         var eventToSave = allEvents.Last() with
         {
-            TimeStamp = 0
+            TimeStamp = 1
         };
 
         var eventStore = new MongoWriteOnlySettingsEventStore(_mongoDbFixture.MongoClient!);

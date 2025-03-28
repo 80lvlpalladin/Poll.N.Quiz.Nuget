@@ -7,13 +7,14 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using Poll.N.Quiz.API.Shared.Exceptions;
+using ConfigurationException = Poll.N.Quiz.API.Shared.Exceptions.ConfigurationException;
 
 namespace Poll.N.Quiz.API.Shared.Extensions;
 
 public static class WebApplicationBuilderExtensions
 {
-    public static WebApplicationBuilder AddConcurrencyRateLimiter(this WebApplicationBuilder builder, int? concurrentRequestsLimit)
+    public static WebApplicationBuilder AddConcurrencyRateLimiter
+        (this WebApplicationBuilder builder, int? concurrentRequestsLimit = null)
     {
         if (concurrentRequestsLimit is null)
         {

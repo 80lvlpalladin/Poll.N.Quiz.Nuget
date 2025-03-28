@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
 
-internal class RedisReadOnlyStorage(string connectionString) : IReadOnlyKeyValueStorage
+internal class RedisReadOnlyKeyValueStorage(string connectionString) : IReadOnlyKeyValueStorage
 {
     private readonly ConnectionMultiplexer _connectionMultiplexer =
         ConnectionMultiplexer.Connect(connectionString, options =>{ options.AllowAdmin = true; });

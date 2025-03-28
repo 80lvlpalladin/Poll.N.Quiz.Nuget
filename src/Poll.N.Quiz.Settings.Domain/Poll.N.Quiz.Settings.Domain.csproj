@@ -5,5 +5,7 @@
       <InternalsVisibleTo Include="Poll.N.Quiz.Settings.Synchronizer.UnitTests" />
 
       <PackageReference Include="MongoDB.Bson"/>
+      <PackageReference Include="JsonPatch.Net"/>
+      <PackageReference Include="ErrorOr"/>
     </ItemGroup>
 </Project>

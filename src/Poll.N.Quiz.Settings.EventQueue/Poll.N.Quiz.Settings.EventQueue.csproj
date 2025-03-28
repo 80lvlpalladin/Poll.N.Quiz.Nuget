@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit"/>
+    <PackageReference Include="MassTransit.AspNetCore" />
+    <PackageReference Include="MassTransit.Kafka" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Poll.N.Quiz.Settings.Domain\Poll.N.Quiz.Settings.Domain.csproj" />
+  </ItemGroup>
+</Project>

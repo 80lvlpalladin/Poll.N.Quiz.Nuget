@@ -4,7 +4,7 @@ using Poll.N.Quiz.Settings.Projection.WriteOnly.Internal;
 
 namespace Poll.N.Quiz.Settings.Projection.WriteOnly.UnitTests.Internal;
 
-public class WriteOnlySettingsProjectionTests
+public class RedisWriteOnlySettingsProjectionTests
 {
     [Test]
     public async Task SaveProjectionAsync_SavesProjection_ToWriteOnlyStorage()
@@ -15,6 +15,7 @@ public class WriteOnlySettingsProjectionTests
         var environmentName = "environment1";
         var expectedStorageKey = $"{serviceName}__{environmentName}";
         uint expectedLastUpdatedTimeStamp = 123124132;
+        uint expectedVersion = 0;
         var expectedSettings =
             $$"""
               {
@@ -22,7 +23,8 @@ public class WriteOnlySettingsProjectionTests
               "Settings": {"key1": "value1"}
               }
               """;
-        var expectedProjectionModel = new ProjectionModel(expectedLastUpdatedTimeStamp, expectedSettings);
+        var expectedProjectionModel = new ProjectionModel
+            (expectedVersion, expectedLastUpdatedTimeStamp, expectedSettings);
         var writeOnlyStorageMock = new Mock<IWriteOnlyKeyValueStorage>();
         writeOnlyStorageMock.Setup(storage => storage.SetAsync(
                 It.Is<string>(str => str == expectedStorageKey),
@@ -34,13 +36,13 @@ public class WriteOnlySettingsProjectionTests
         {
             ExpirationTimeHours = expectedExpirationTimeHours
         };
-        var settingsProjectionRepository = new WriteOnlySettingsProjection
+        var settingsProjectionRepository = new RedisWriteOnlySettingsProjection
             (writeOnlyStorageMock.Object, Options.Create(settingsProjectionOptions));
 
 
         // Act
         await settingsProjectionRepository.SaveProjectionAsync(
-            expectedLastUpdatedTimeStamp, serviceName, environmentName, expectedSettings);
+            expectedLastUpdatedTimeStamp, expectedVersion, serviceName, environmentName, expectedSettings);
 
         // Assert
         writeOnlyStorageMock.Verify(storage => storage.SetAsync(

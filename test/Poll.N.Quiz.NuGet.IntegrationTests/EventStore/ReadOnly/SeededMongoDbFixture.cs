@@ -1,8 +1,8 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Poll.N.Quiz.NuGet.IntegrationTests.EventStore.WriteOnly;
-using Poll.N.Quiz.Settings.Messaging.Contracts;
-using Poll.N.Quiz.Settings.Messaging.Contracts.Internal;
+using Poll.N.Quiz.Settings.Domain.Internal;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.EventStore.ReadOnly;
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Poll.N.Quiz.API.Shared.ExceptionHandlers;
+namespace Poll.N.Quiz.API.Shared;
 
 public class GlobalExceptionHandler(string? environment, ILogger<GlobalExceptionHandler> logger)
     : IExceptionHandler
@@ -14,7 +14,7 @@ public class GlobalExceptionHandler(string? environment, ILogger<GlobalException
         CancellationToken cancellationToken)
     {
         var correlationId = exception.Source ?? string.Empty;
-        GlobalLogger.HandledException(logger, exception.Message, correlationId, exception);
+        Shared.GlobalLogger.LogException(logger, exception.Message, correlationId, exception);
 
         var problemDetails = new ProblemDetails
         {
@@ -32,13 +32,4 @@ public class GlobalExceptionHandler(string? environment, ILogger<GlobalException
     private bool IsDevelopment() =>
         environment is null ||
         string.Equals(environment, "development", StringComparison.OrdinalIgnoreCase);
-}
-
-public partial class GlobalLogger
-{
-    /// <summary>
-    /// Logs a handled exception.
-    /// </summary>
-    [LoggerMessage(1, LogLevel.Error, "{Message}, CorrelationId: {CorrelationId}", EventName = "HandledException")]
-    public static partial void HandledException(ILogger logger, string message, string correlationId, Exception exception);
 }

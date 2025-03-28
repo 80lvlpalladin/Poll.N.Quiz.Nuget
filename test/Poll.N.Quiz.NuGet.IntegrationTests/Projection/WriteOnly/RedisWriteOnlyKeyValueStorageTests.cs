@@ -4,7 +4,7 @@ using Testcontainers.Redis;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.Projection.WriteOnly;
 
-public class RedisWriteOnlyStorageTests
+public class RedisWriteOnlyKeyValueStorageTests
 {
     private static readonly RedisContainer RedisContainer = new RedisBuilder().Build();
 
@@ -29,7 +29,7 @@ public class RedisWriteOnlyStorageTests
     {
         // Arrange
         IWriteOnlyKeyValueStorage storage =
-            new RedisWriteOnlyStorage(RedisContainer.GetConnectionString());
+            new RedisWriteOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var expectedKey = "test-key";
         var expectedValue = "test-value";
 
@@ -49,7 +49,7 @@ public class RedisWriteOnlyStorageTests
     {
         // Arrange
         IWriteOnlyKeyValueStorage storage =
-            new RedisWriteOnlyStorage(RedisContainer.GetConnectionString());
+            new RedisWriteOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var expectedKey = "test-key";
         var expectedValue = "test-value";
         var expiration = TimeSpan.FromMilliseconds(500);
@@ -70,7 +70,7 @@ public class RedisWriteOnlyStorageTests
     {
         // Arrange
         IWriteOnlyKeyValueStorage storage =
-            new RedisWriteOnlyStorage(RedisContainer.GetConnectionString());
+            new RedisWriteOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var expectedKey = "test-key";
         var expectedValue = "test-value";
         await storage.SetAsync(expectedKey, expectedValue, null);
@@ -90,7 +90,7 @@ public class RedisWriteOnlyStorageTests
     {
         // Arrange
         IWriteOnlyKeyValueStorage storage =
-            new RedisWriteOnlyStorage(RedisContainer.GetConnectionString());
+            new RedisWriteOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var keyPrefix = "test-key";
         var expectedKeys = new[] { "test-key1", "test-key2", "test-key3", "another-key" };
         foreach (var key in expectedKeys)
@@ -120,7 +120,7 @@ public class RedisWriteOnlyStorageTests
     {
         // Arrange
         IWriteOnlyKeyValueStorage storage =
-            new RedisWriteOnlyStorage(RedisContainer.GetConnectionString());
+            new RedisWriteOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var keyPrefix = "test-key";
         var expectedKeys = new[] { "test-key1", "test-key2", "test-key3", "another-key" };
         var expectedValue = "test-value";

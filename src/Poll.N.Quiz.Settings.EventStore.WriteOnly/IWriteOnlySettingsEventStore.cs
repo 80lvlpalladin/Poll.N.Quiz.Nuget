@@ -1,4 +1,4 @@
-using Poll.N.Quiz.Settings.Messaging.Contracts;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.Settings.EventStore.WriteOnly;
 

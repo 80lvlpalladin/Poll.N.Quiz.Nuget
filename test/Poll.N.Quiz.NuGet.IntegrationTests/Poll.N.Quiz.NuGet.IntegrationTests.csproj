@@ -8,7 +8,9 @@
       <PackageReference Include="Testcontainers.Redis"/>
 
       <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.EventStore.WriteOnly\Poll.N.Quiz.Settings.EventStore.WriteOnly.csproj" />
-      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Messaging.Contracts\Poll.N.Quiz.Settings.Messaging.Contracts.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.FileStore.ReadOnly\Poll.N.Quiz.Settings.FileStore.ReadOnly.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.FileStore.WriteOnly\Poll.N.Quiz.Settings.FileStore.WriteOnly.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Domain\Poll.N.Quiz.Settings.Domain.csproj" />
       <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.EventStore.ReadOnly\Poll.N.Quiz.Settings.EventStore.ReadOnly.csproj" />
       <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.ReadOnly\Poll.N.Quiz.Settings.Projection.ReadOnly.csproj" />
       <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.WriteOnly\Poll.N.Quiz.Settings.Projection.WriteOnly.csproj" />

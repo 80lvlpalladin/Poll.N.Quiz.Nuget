@@ -1,6 +1,6 @@
 using Poll.N.Quiz.Settings.EventStore.ReadOnly.Internal;
-using Poll.N.Quiz.Settings.Messaging.Contracts;
-using Poll.N.Quiz.Settings.Messaging.Contracts.Internal;
+using Poll.N.Quiz.Settings.Domain.Internal;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.EventStore.ReadOnly;
 

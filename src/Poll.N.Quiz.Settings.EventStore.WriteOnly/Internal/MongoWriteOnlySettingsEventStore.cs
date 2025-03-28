@@ -1,11 +1,11 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Poll.N.Quiz.Settings.Messaging.Contracts;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.Settings.EventStore.WriteOnly.Internal;
 
-public class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, IDisposable
+internal class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, IDisposable
 {
     private readonly IMongoCollection<BsonDocument> _settingsEventCollection;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
@@ -51,8 +51,8 @@ public class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, ID
             var anyEventsExist = await _settingsEventCollection
                 .AsQueryable()
                 .AnyAsync(se =>
-                    se[nameof(@event.ServiceName)].AsString == @event.ServiceName &&
-                    se[nameof(@event.EnvironmentName)].AsString == @event.EnvironmentName);
+                    se[nameof(SettingsMetadata.ServiceName)].AsString == @event.Metadata.ServiceName &&
+                    se[nameof(SettingsMetadata.EnvironmentName)].AsString == @event.Metadata.EnvironmentName);
 
             return !anyEventsExist;
         }
@@ -61,8 +61,8 @@ public class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, ID
         {
             var lastSavedEvent =
                 _settingsEventCollection.AsQueryable().Last(se =>
-                    se[nameof(@event.ServiceName)].AsString == @event.ServiceName &&
-                    se[nameof(@event.EnvironmentName)].AsString == @event.EnvironmentName);
+                    se[nameof(SettingsMetadata.ServiceName)].AsString == @event.Metadata.ServiceName &&
+                    se[nameof(SettingsMetadata.EnvironmentName)].AsString == @event.Metadata.EnvironmentName);
 
             if (lastSavedEvent is null)
                 return false;
@@ -79,8 +79,8 @@ public class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, ID
         var compoundIndexModel = new CreateIndexModel<BsonDocument>(
             Builders<BsonDocument>.IndexKeys
                 .Ascending(nameof(SettingsEvent.TimeStamp))
-                .Text(nameof(SettingsEvent.ServiceName))
-                .Text(nameof(SettingsEvent.EnvironmentName))
+                .Text(nameof(SettingsMetadata.ServiceName))
+                .Text(nameof(SettingsMetadata.EnvironmentName))
                 .Text(nameof(SettingsEvent.EventType)));
 
         var createdIndex = _settingsEventCollection.Indexes.CreateOne(compoundIndexModel);

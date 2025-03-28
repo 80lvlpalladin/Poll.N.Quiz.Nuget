@@ -6,18 +6,20 @@ namespace Poll.N.Quiz.Settings.Projection.WriteOnly;
 
 public static class ServiceRegistrant
 {
-    public static IServiceCollection AddWriteOnlySettingsProjection
-        (this IServiceCollection services, IConfiguration configuration)
-    {
-        var redisConnectionString =
-            configuration.GetConnectionString("Redis");
+    public static IServiceCollection AddSettingsProjectionOptions
+        (this IServiceCollection services, IConfiguration configuration) =>
+        services.Configure<SettingsProjectionOptions>(
+            configuration.GetRequiredSection(SettingsProjectionOptions.SectionName));
 
-        if (string.IsNullOrWhiteSpace(redisConnectionString))
-            throw new ArgumentException("Redis connection string was not found in configuration");
+    public static IServiceCollection AddWriteOnlySettingsProjection(
+        this IServiceCollection services,
+        string connectionString)
+    {
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new ArgumentException("Settings projection connection string cannot be empty");
 
         return services
-            .Configure<SettingsProjectionOptions>(configuration.GetRequiredSection(SettingsProjectionOptions.SectionName))
-            .AddSingleton<IWriteOnlyKeyValueStorage>(_ => new RedisWriteOnlyStorage(redisConnectionString))
-            .AddSingleton<IWriteOnlySettingsProjection, WriteOnlySettingsProjection>();
+            .AddSingleton<IWriteOnlyKeyValueStorage>(_ => new RedisWriteOnlyKeyValueStorage(connectionString))
+            .AddSingleton<IWriteOnlySettingsProjection, RedisWriteOnlySettingsProjection>();
     }
 }

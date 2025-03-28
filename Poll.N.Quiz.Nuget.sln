@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E3B00090-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.API.Shared", "src\Poll.N.Quiz.API.Shared\Poll.N.Quiz.API.Shared.csproj", "{6D287515-6A89-42E4-B797-C05A86FF4BA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Messaging.Contracts", "src\Poll.N.Quiz.Settings.Messaging.Contracts\Poll.N.Quiz.Settings.Messaging.Contracts.csproj", "{BF2E31EA-45A6-4702-851E-E3F1AE137ECD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Domain", "src\Poll.N.Quiz.Settings.Domain\Poll.N.Quiz.Settings.Domain.csproj", "{BF2E31EA-45A6-4702-851E-E3F1AE137ECD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.EventStore.ReadOnly", "src\Poll.N.Quiz.Settings.EventStore.ReadOnly\Poll.N.Quiz.Settings.EventStore.ReadOnly.csproj", "{49A09047-075F-4EDF-9186-3C15F877C42D}"
 EndProject
@@ -27,6 +27,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Projection.ReadOnly.UnitTests", "test\Poll.N.Quiz.Settings.Projection.ReadOnly.UnitTests\Poll.N.Quiz.Settings.Projection.ReadOnly.UnitTests.csproj", "{CB648EB7-845A-4200-9E8A-C17B3FDD40B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Projection.WriteOnly.UnitTests", "test\Poll.N.Quiz.Settings.Projection.WriteOnly.UnitTests\Poll.N.Quiz.Settings.Projection.WriteOnly.UnitTests.csproj", "{009723D9-7394-4B97-8021-CEB99C073626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.FileStore.ReadOnly", "src\Poll.N.Quiz.Settings.FileStore.ReadOnly\Poll.N.Quiz.Settings.FileStore.ReadOnly.csproj", "{FB13242B-80BC-45C8-9F40-D0F3557A2D6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.FileStore.WriteOnly", "src\Poll.N.Quiz.Settings.FileStore.WriteOnly\Poll.N.Quiz.Settings.FileStore.WriteOnly.csproj", "{77752155-D1A5-4703-AE43-D4764BA469CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Aspire", "src\Poll.N.Quiz.Aspire\Poll.N.Quiz.Aspire.csproj", "{646BBC49-F941-42E2-AD66-55B8FEC50BE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.EventQueue", "src\Poll.N.Quiz.Settings.EventQueue\Poll.N.Quiz.Settings.EventQueue.csproj", "{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +78,22 @@ Global
 		{009723D9-7394-4B97-8021-CEB99C073626}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{009723D9-7394-4B97-8021-CEB99C073626}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{009723D9-7394-4B97-8021-CEB99C073626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB13242B-80BC-45C8-9F40-D0F3557A2D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB13242B-80BC-45C8-9F40-D0F3557A2D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB13242B-80BC-45C8-9F40-D0F3557A2D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB13242B-80BC-45C8-9F40-D0F3557A2D6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77752155-D1A5-4703-AE43-D4764BA469CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77752155-D1A5-4703-AE43-D4764BA469CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77752155-D1A5-4703-AE43-D4764BA469CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77752155-D1A5-4703-AE43-D4764BA469CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{646BBC49-F941-42E2-AD66-55B8FEC50BE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{646BBC49-F941-42E2-AD66-55B8FEC50BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646BBC49-F941-42E2-AD66-55B8FEC50BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{646BBC49-F941-42E2-AD66-55B8FEC50BE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D287515-6A89-42E4-B797-C05A86FF4BA3} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
@@ -81,5 +105,9 @@ Global
 		{804342F5-9D84-40A1-9D7C-D6D9A9B9B147} = {E3B00090-617E-4F15-B450-1FBFA131094C}
 		{CB648EB7-845A-4200-9E8A-C17B3FDD40B1} = {E3B00090-617E-4F15-B450-1FBFA131094C}
 		{009723D9-7394-4B97-8021-CEB99C073626} = {E3B00090-617E-4F15-B450-1FBFA131094C}
+		{FB13242B-80BC-45C8-9F40-D0F3557A2D6A} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
+		{77752155-D1A5-4703-AE43-D4764BA469CF} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
+		{646BBC49-F941-42E2-AD66-55B8FEC50BE5} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
+		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
 	EndGlobalSection
 EndGlobal

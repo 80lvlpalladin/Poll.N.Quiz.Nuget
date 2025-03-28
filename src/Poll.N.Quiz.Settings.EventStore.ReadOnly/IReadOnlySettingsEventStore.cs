@@ -1,12 +1,12 @@
-using Poll.N.Quiz.Settings.Messaging.Contracts;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.Settings.EventStore.ReadOnly;
 
 public interface IReadOnlySettingsEventStore
 {
-    public Task<SettingsEvent[]> GetEventsAsync
-        (string serviceName, string environmentName, CancellationToken cancellationToken = default);
+    public Task<SettingsEvent[]> GetAsync
+        (SettingsMetadata settingsMetadata, CancellationToken cancellationToken = default);
 
-    public Task<SettingsEvent[]> GetAllEventsAsync
+    public Task<SettingsEvent[]> GetAllAsync
         (CancellationToken cancellationToken = default);
 }

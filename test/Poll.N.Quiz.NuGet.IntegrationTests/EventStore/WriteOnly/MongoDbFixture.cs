@@ -32,7 +32,6 @@ public class MongoDbFixture : IAsyncDisposable
         await _mongoContainer.StopAsync();
         await _mongoContainer.DisposeAsync();
 
-        MongoClient.Dispose();
         MongoClient = null;
         GC.SuppressFinalize(this);
     }

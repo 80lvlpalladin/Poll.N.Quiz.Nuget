@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
 
@@ -7,15 +6,13 @@ namespace Poll.N.Quiz.Settings.Projection.ReadOnly;
 public static class ServiceRegistrant
 {
     public static IServiceCollection AddReadOnlySettingsProjection
-        (this IServiceCollection services, IConfiguration configuration)
+        (this IServiceCollection services, string connectionString)
     {
-        var redisConnectionString = configuration.GetConnectionString("Redis");
-
-        if (string.IsNullOrWhiteSpace(redisConnectionString))
-            throw new ArgumentException("Redis connection string is not set in the configuration");
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new ArgumentException("Settings projection connection string cannot be empty");
 
         return services
-            .AddSingleton<RedisReadOnlyStorage>(_ => new RedisReadOnlyStorage(redisConnectionString))
-            .AddSingleton<IReadOnlySettingsProjection, ReadOnlySettingsProjection>();
+            .AddSingleton<IReadOnlyKeyValueStorage>(_ => new RedisReadOnlyKeyValueStorage(connectionString))
+            .AddSingleton<IReadOnlySettingsProjection, RedisReadOnlySettingsProjection>();
     }
 }

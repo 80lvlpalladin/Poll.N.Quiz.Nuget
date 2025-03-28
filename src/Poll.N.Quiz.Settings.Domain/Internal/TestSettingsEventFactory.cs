@@ -1,5 +1,7 @@
 
-namespace Poll.N.Quiz.Settings.Messaging.Contracts.Internal;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
+
+namespace Poll.N.Quiz.Settings.Domain.Internal;
 
 internal static class TestSettingsEventFactory
 {
@@ -13,22 +15,22 @@ internal static class TestSettingsEventFactory
         var environment2 = "environment2";
 
         yield return new SettingsEvent
-            (SettingsEventType.CreateEvent, now, service1, environment1, TrimJson(InitialSettings1));
+            (SettingsEventType.CreateEvent, new SettingsMetadata(service1, environment1), now, 0, TrimJson(InitialSettings1));
 
         yield return new SettingsEvent
-            (SettingsEventType.CreateEvent, now + 100, service2, environment2, TrimJson(InitialSettings2));
+            (SettingsEventType.CreateEvent, new SettingsMetadata(service2, environment2),now + 100, 0, TrimJson(InitialSettings2));
 
         yield return new SettingsEvent
-            (SettingsEventType.UpdateEvent, now + 200, service1, environment1, TrimJson(Settings1Patch1));
+            (SettingsEventType.UpdateEvent, new SettingsMetadata(service1, environment1),now + 200, 1, TrimJson(Settings1Patch1));
 
         yield return new SettingsEvent
-            (SettingsEventType.UpdateEvent,now + 300, service1, environment1, TrimJson(Settings1Patch2));
+            (SettingsEventType.UpdateEvent,new SettingsMetadata(service1, environment1),now + 300, 2, TrimJson(Settings1Patch2));
 
         yield return new SettingsEvent
-            (SettingsEventType.UpdateEvent,now + 400, service1, environment1, TrimJson(Settings1Patch3));
+            (SettingsEventType.UpdateEvent, new SettingsMetadata(service1, environment1),now + 400, 3, TrimJson(Settings1Patch3));
 
         yield return new SettingsEvent
-            (SettingsEventType.UpdateEvent,now + 500, service2, environment2, TrimJson(Settings2Patch1));
+            (SettingsEventType.UpdateEvent,new SettingsMetadata(service2, environment2),now + 500, 1, TrimJson(Settings2Patch1));
     }
 
     internal static SettingsEvent CreateSettingsUpdateEvent() =>
