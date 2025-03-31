@@ -1,8 +1,8 @@
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
-namespace Poll.N.Quiz.Settings.Projection.ReadOnly;
+namespace Poll.N.Quiz.Settings.ProjectionStore.ReadOnly;
 
-public interface IReadOnlySettingsProjection
+public interface IReadOnlySettingsProjectionStore
 {
     public Task<SettingsProjection?> GetAsync(SettingsMetadata settingsMetadata);
 

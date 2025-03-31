@@ -18,9 +18,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.EventS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.EventStore.WriteOnly", "src\Poll.N.Quiz.Settings.EventStore.WriteOnly\Poll.N.Quiz.Settings.EventStore.WriteOnly.csproj", "{DB27DB50-4155-4CE8-A5A9-46E0EE0B7407}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Projection.ReadOnly", "src\Poll.N.Quiz.Settings.Projection.ReadOnly\Poll.N.Quiz.Settings.Projection.ReadOnly.csproj", "{EB88D4D9-9A27-4D2C-A1A4-4C9C4C4EAEE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.ProjectionStore.ReadOnly", "src\Poll.N.Quiz.Settings.ProjectionStore.ReadOnly\Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.csproj", "{EB88D4D9-9A27-4D2C-A1A4-4C9C4C4EAEE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Projection.WriteOnly", "src\Poll.N.Quiz.Settings.Projection.WriteOnly\Poll.N.Quiz.Settings.Projection.WriteOnly.csproj", "{1046B8EE-6B97-485E-9B6B-98949BBC8D40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.ProjectionStore.WriteOnly", "src\Poll.N.Quiz.Settings.ProjectionStore.WriteOnly\Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.csproj", "{1046B8EE-6B97-485E-9B6B-98949BBC8D40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.NuGet.IntegrationTests", "test\Poll.N.Quiz.NuGet.IntegrationTests\Poll.N.Quiz.NuGet.IntegrationTests.csproj", "{804342F5-9D84-40A1-9D7C-D6D9A9B9B147}"
 EndProject
@@ -35,6 +35,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Aspire", "src\Poll.N.Quiz.Aspire\Poll.N.Quiz.Aspire.csproj", "{646BBC49-F941-42E2-AD66-55B8FEC50BE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.EventQueue", "src\Poll.N.Quiz.Settings.EventQueue\Poll.N.Quiz.Settings.EventQueue.csproj", "{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Domain.UnitTests", "test\Poll.N.Quiz.Settings.Domain.UnitTests\Poll.N.Quiz.Settings.Domain.UnitTests.csproj", "{F3B7019E-928F-4425-A468-A0BE71F82C2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +96,10 @@ Global
 		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D287515-6A89-42E4-B797-C05A86FF4BA3} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
@@ -109,5 +115,6 @@ Global
 		{77752155-D1A5-4703-AE43-D4764BA469CF} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
 		{646BBC49-F941-42E2-AD66-55B8FEC50BE5} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
 		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
+		{F3B7019E-928F-4425-A468-A0BE71F82C2E} = {E3B00090-617E-4F15-B450-1FBFA131094C}
 	EndGlobalSection
 EndGlobal

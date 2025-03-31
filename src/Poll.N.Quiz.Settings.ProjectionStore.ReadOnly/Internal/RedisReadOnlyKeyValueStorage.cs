@@ -1,7 +1,7 @@
 using System.Text.Json;
 using StackExchange.Redis;
 
-namespace Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
+namespace Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.Internal;
 
 internal class RedisReadOnlyKeyValueStorage(string connectionString) : IReadOnlyKeyValueStorage
 {

@@ -1,11 +1,11 @@
 using Microsoft.Extensions.Options;
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
-namespace Poll.N.Quiz.Settings.Projection.WriteOnly.Internal;
+namespace Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.Internal;
 
-internal class RedisWriteOnlySettingsProjection
-    (IWriteOnlyKeyValueStorage storage, IOptions<SettingsProjectionOptions> options)
-    : IWriteOnlySettingsProjection
+internal class RedisWriteOnlySettingsProjectionStore
+    (IWriteOnlyKeyValueStorage storage, IOptions<SettingsProjectionStoreOptions> options)
+    : IWriteOnlySettingsProjectionStore
 {
     private readonly TimeSpan _expiryTime = TimeSpan.FromHours(options.Value.ExpirationTimeHours);
 

@@ -1,9 +1,9 @@
 using System.Text.Json;
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
-namespace Poll.N.Quiz.Settings.Projection.WriteOnly;
+namespace Poll.N.Quiz.Settings.ProjectionStore.WriteOnly;
 
-public interface IWriteOnlySettingsProjection
+public interface IWriteOnlySettingsProjectionStore
 {
     public Task SaveProjectionAsync(
         SettingsProjection projection,

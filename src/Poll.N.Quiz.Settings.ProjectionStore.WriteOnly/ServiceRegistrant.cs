@@ -1,17 +1,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Poll.N.Quiz.Settings.Projection.WriteOnly.Internal;
+using Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.Internal;
 
-namespace Poll.N.Quiz.Settings.Projection.WriteOnly;
+namespace Poll.N.Quiz.Settings.ProjectionStore.WriteOnly;
 
 public static class ServiceRegistrant
 {
-    public static IServiceCollection AddSettingsProjectionOptions
+    public static IServiceCollection AddSettingsProjectionStoreOptions
         (this IServiceCollection services, IConfiguration configuration) =>
-        services.Configure<SettingsProjectionOptions>(
-            configuration.GetRequiredSection(SettingsProjectionOptions.SectionName));
+        services.Configure<SettingsProjectionStoreOptions>(
+            configuration.GetRequiredSection(SettingsProjectionStoreOptions.SectionName));
 
-    public static IServiceCollection AddWriteOnlySettingsProjection(
+    public static IServiceCollection AddWriteOnlySettingsProjectionStore(
         this IServiceCollection services,
         string connectionString)
     {
@@ -20,6 +20,6 @@ public static class ServiceRegistrant
 
         return services
             .AddSingleton<IWriteOnlyKeyValueStorage>(_ => new RedisWriteOnlyKeyValueStorage(connectionString))
-            .AddSingleton<IWriteOnlySettingsProjection, RedisWriteOnlySettingsProjection>();
+            .AddSingleton<IWriteOnlySettingsProjectionStore, RedisWriteOnlySettingsProjectionStore>();
     }
 }

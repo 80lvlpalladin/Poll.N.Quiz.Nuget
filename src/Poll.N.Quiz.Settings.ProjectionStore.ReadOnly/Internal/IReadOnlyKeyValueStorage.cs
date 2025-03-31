@@ -1,4 +1,4 @@
-namespace Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
+namespace Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.Internal;
 
 internal interface IReadOnlyKeyValueStorage
 {

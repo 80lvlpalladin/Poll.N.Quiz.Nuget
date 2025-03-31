@@ -13,17 +13,10 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AServiceDescriptor_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F4f88bc42357e01c2b3f31c81be3ba0569f1f29465fd279311ed08489cd78b2_003FServiceDescriptor_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5a6664f4_002D6df4_002D4a1c_002Da33c_002D58e3f83ea2a7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetAsync_JsonData_IfFileExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.ReadOnly.ReadOnlySettingsFileStoreTests.GetSettingsAsync_JsonData_IfFileExists:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.ReadOnly.ReadOnlySettingsFileStoreTests.GetSettingsAsync_ThrowsFileNotFoundException_IfFileDoesNotExist:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.ReadOnly.ReadOnlySettingsFileStoreTests.GetAllSettingsMetadata_ReturnsAllSettingsMetadata:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.ReadOnly.ReadOnlySettingsFileStoreTests.Constructor_ThrowsArgumentException_IfPathIsNotFullyQualified:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.WriteOnly.WriteOnlySettingsFileStorageTests.SaveAsync_IsThreadSafe:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.WriteOnly.WriteOnlySettingsFileStorageTests.SaveAsync_ThrowsIOException_IfFileIsLocked:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::804342F5-9D84-40A1-9D7C-D6D9A9B9B147::net9.0::Poll.N.Quiz.NuGet.IntegrationTests.FileStore.WriteOnly.WriteOnlySettingsFileStorageTests.Constructor_ThrowsArgumentException_IfPathIsNotFullyQualified:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::CB648EB7-845A-4200-9E8A-C17B3FDD40B1::net9.0::Poll.N.Quiz.Settings.Projection.ReadOnly.UnitTests.Internal.ReadOnlySettingsProjectionTests.GetProjectionAsync_ReturnsProjection_FromReadOnlyStorage:0&lt;/TestId&gt;
-    &lt;TestId&gt;Testing Platform::009723D9-7394-4B97-8021-CEB99C073626::net9.0::Poll.N.Quiz.Settings.Projection.WriteOnly.UnitTests.Internal.WriteOnlySettingsProjectionTests.SaveProjectionAsync_SavesProjection_ToWriteOnlyStorage:0&lt;/TestId&gt;
+    &lt;TestId&gt;Testing Platform::F3B7019E-928F-4425-A468-A0BE71F82C2E::net9.0::SettingsAggregateTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=009723d9_002D7394_002D4b97_002D8021_002Dceb99c073626_0023Poll_002EN_002EQuiz_002ESettings_002EProjection_002EWriteOnly_002EUnitTests/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=804342f5_002D9d84_002D40a1_002D9d7c_002Dd6d9a9b9b147_0023Poll_002EN_002EQuiz_002ENuGet_002EIntegrationTests/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=cb648eb7_002D845a_002D4200_002D9e8a_002Dc17b3fdd40b1_0023Poll_002EN_002EQuiz_002ESettings_002EProjection_002EReadOnly_002EUnitTests/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=cb648eb7_002D845a_002D4200_002D9e8a_002Dc17b3fdd40b1_0023Poll_002EN_002EQuiz_002ESettings_002EProjection_002EReadOnly_002EUnitTests/@EntryIndexedValue">True</s:Boolean>
+	</wpf:ResourceDictionary>

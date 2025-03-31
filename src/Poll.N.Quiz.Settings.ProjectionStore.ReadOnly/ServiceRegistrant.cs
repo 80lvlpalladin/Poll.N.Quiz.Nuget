@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
-using Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
+using Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.Internal;
 
-namespace Poll.N.Quiz.Settings.Projection.ReadOnly;
+namespace Poll.N.Quiz.Settings.ProjectionStore.ReadOnly;
 
 public static class ServiceRegistrant
 {
-    public static IServiceCollection AddReadOnlySettingsProjection
+    public static IServiceCollection AddReadOnlySettingsProjectionStore
         (this IServiceCollection services, string connectionString)
     {
         if (string.IsNullOrWhiteSpace(connectionString))
@@ -13,6 +13,6 @@ public static class ServiceRegistrant
 
         return services
             .AddSingleton<IReadOnlyKeyValueStorage>(_ => new RedisReadOnlyKeyValueStorage(connectionString))
-            .AddSingleton<IReadOnlySettingsProjection, RedisReadOnlySettingsProjection>();
+            .AddSingleton<IReadOnlySettingsProjectionStore, RedisReadOnlySettingsProjectionStore>();
     }
 }

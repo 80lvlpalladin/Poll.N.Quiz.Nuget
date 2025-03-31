@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using ErrorOr;
@@ -6,78 +7,111 @@ using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.Settings.Domain;
 
-//TODO cover with tests
+
 public sealed class SettingsAggregate
 {
-    public SettingsAggregate(SettingsEvent settingsCreateEvent)
+    // ReSharper disable once ConvertToPrimaryConstructor
+    public SettingsAggregate(SettingsMetadata metadata, SettingsProjection? currentProjection = null)
     {
-        if (settingsCreateEvent.EventType is not SettingsEventType.CreateEvent ||
-            settingsCreateEvent.Version is not 0)
-            throw new ArgumentException("Provided settings event is not of type SettingsCreateEvent");
-
-        CurrentProjection = new SettingsProjection(
-            settingsCreateEvent.JsonData,
-            settingsCreateEvent.TimeStamp,
-            settingsCreateEvent.Version);
-
-        Metadata = settingsCreateEvent.Metadata;
-    }
-
-    public SettingsAggregate(SettingsMetadata metadata, SettingsProjection projection)
-    {
+        CurrentProjection = currentProjection;
         Metadata = metadata;
-        CurrentProjection = projection;
     }
 
-    public SettingsProjection CurrentProjection { get; private set; }
+    public SettingsProjection? CurrentProjection { get; private set; }
+    public  SettingsMetadata Metadata { get; }
 
-    public SettingsMetadata Metadata { get; }
-
-
-    public ErrorOr<Success> ApplyEvent(SettingsEvent settingsUpdateEvent)
+    public ErrorOr<Success> ApplyEvent(SettingsEvent settingsEvent)
     {
-        if (settingsUpdateEvent.EventType is not SettingsEventType.UpdateEvent)
-            return Error.Validation("Provided event is not of type SettingsUpdateEvent");
+        var validateResult = Validate(settingsEvent);
 
-        if (settingsUpdateEvent.Version != CurrentProjection.Version + 1)
-            return Error.Validation("Event version must be one greater than the current version.");
+        if (validateResult.IsError)
+            return validateResult.FirstError;
 
-        if (settingsUpdateEvent.TimeStamp < CurrentProjection.LastUpdatedTimestamp)
-            return Error.Validation("Event timestamp must be greater than the current timestamp.");
-
-        if (settingsUpdateEvent.Metadata.ServiceName != Metadata.ServiceName)
-            return Error.Validation("Service name must match the current service name.");
-
-        if (settingsUpdateEvent.Metadata.EnvironmentName != Metadata.EnvironmentName)
-            return Error.Validation("Environment name must match the current environment name.");
-
-        return UpdateCurrentProjection(settingsUpdateEvent);
+        return CreateOrUpdateCurrentProjection(settingsEvent);
     }
 
-    private ErrorOr<Success> UpdateCurrentProjection(SettingsEvent settingsUpdateEvent)
-    {
-        var eventJsonPatch = JsonSerializer.Deserialize<JsonPatch>(settingsUpdateEvent.JsonData);
 
-        if(eventJsonPatch is null)
+    private ErrorOr<Success> CreateOrUpdateCurrentProjection(SettingsEvent settingsEvent)
+    {
+        if (settingsEvent.EventType is SettingsEventType.CreateEvent && CurrentProjection is null)
+        {
+            CurrentProjection = new SettingsProjection(
+                settingsEvent.JsonData,
+                settingsEvent.TimeStamp,
+                settingsEvent.Version);
+
+            return Result.Success;
+        }
+
+        if (settingsEvent.EventType is SettingsEventType.UpdateEvent && CurrentProjection is not null)
+        {
+            var applyJsonPatchResult =
+                ApplyJsonPatch(CurrentProjection.JsonData, settingsEvent.JsonData);
+
+            if (applyJsonPatchResult.IsError)
+                return applyJsonPatchResult.FirstError;
+
+            CurrentProjection = new SettingsProjection(
+                applyJsonPatchResult.Value,
+                settingsEvent.TimeStamp,
+                settingsEvent.Version);
+
+            return Result.Success;
+        }
+
+        return Error.Failure("SettingsAggregate state is invalid");
+    }
+
+    private ErrorOr<Success> Validate(SettingsEvent settingsEvent)
+    {
+        if(settingsEvent.Metadata != Metadata)
+            return Error.Validation("SettingsEvent metadata does not match SettingsAggregate metadata.");
+
+        if (settingsEvent.EventType is SettingsEventType.CreateEvent)
+        {
+            if(settingsEvent.Version is not 0)
+                return Error.Validation("SettingsCreateEvent version must be 0.");
+
+            if(CurrentProjection is not null)
+                return Error.Validation("Projection already exists for this event.");
+
+        }
+        else if(settingsEvent.EventType is SettingsEventType.UpdateEvent)
+        {
+            if(CurrentProjection is null)
+                return Error.Validation("Projection does not exist for this event.");
+
+            if (settingsEvent.Version != CurrentProjection.Version + 1)
+                return Error.Validation("Event version must be one greater than the current version.");
+
+            if (settingsEvent.TimeStamp < CurrentProjection.LastUpdatedTimestamp)
+                return Error.Validation("Event timestamp must be greater than the current timestamp.");
+        }
+        else
+        {
+            return Error.Validation("Unsupported event type");
+        }
+
+        return Result.Success;
+    }
+
+    internal static ErrorOr<string> ApplyJsonPatch(string originalJson, string jsonPatch)
+    {
+        var eventJsonPatch = JsonSerializer.Deserialize<JsonPatch>(jsonPatch);
+
+        if (eventJsonPatch is null)
             return Error.Validation("Failed to deserialize event's json patch.");
 
-        var currentProjectionJsonNode = JsonNode.Parse(CurrentProjection.JsonData);
+        var currentProjectionJsonNode = JsonNode.Parse(originalJson);
 
-        if(currentProjectionJsonNode is null)
+        if (currentProjectionJsonNode is null)
             return Error.Validation("Failed to parse current projection's json data.");
 
         var patchResult = eventJsonPatch.Apply(currentProjectionJsonNode);
 
-        if(!patchResult.IsSuccess || patchResult.Result is null)
+        if (!patchResult.IsSuccess || patchResult.Result is null)
             return Error.Failure("Failed to apply patch to current projection.");
 
-        var newProjectionJson = patchResult.Result.ToJsonString();
-
-        CurrentProjection = new SettingsProjection(
-            newProjectionJson,
-            settingsUpdateEvent.TimeStamp,
-            settingsUpdateEvent.Version);
-
-        return Result.Success;
+        return patchResult.Result.ToJsonString();
     }
 }

@@ -1,4 +1,4 @@
-namespace Poll.N.Quiz.Settings.Projection.WriteOnly.Internal;
+namespace Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.Internal;
 
 internal interface IWriteOnlyKeyValueStorage
 {

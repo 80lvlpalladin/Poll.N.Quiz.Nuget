@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Domain\Poll.N.Quiz.Settings.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

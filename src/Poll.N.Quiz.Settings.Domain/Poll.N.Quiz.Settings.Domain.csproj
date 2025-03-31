@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
       <InternalsVisibleTo Include="Poll.N.Quiz.NuGet.IntegrationTests" />
-      <InternalsVisibleTo Include="Poll.N.Quiz.Settings.Commands.UnitTests" />
-      <InternalsVisibleTo Include="Poll.N.Quiz.Settings.Synchronizer.UnitTests" />
+      <InternalsVisibleTo Include="Poll.N.Quiz.Settings.Domain.UnitTests" />
 
       <PackageReference Include="MongoDB.Bson"/>
       <PackageReference Include="JsonPatch.Net"/>

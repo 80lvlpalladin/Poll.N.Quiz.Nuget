@@ -1,9 +1,9 @@
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
-namespace Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
+namespace Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.Internal;
 
-internal class RedisReadOnlySettingsProjection(IReadOnlyKeyValueStorage redisStorage)
-    : IReadOnlySettingsProjection
+internal class RedisReadOnlySettingsProjectionStore(IReadOnlyKeyValueStorage redisStorage)
+    : IReadOnlySettingsProjectionStore
 {
     private static string CreateRedisKey(SettingsMetadata settingsMetadata) =>
         $"{settingsMetadata.ServiceName}__{settingsMetadata.EnvironmentName}";
