@@ -1,9 +1,9 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Poll.N.Quiz.Settings.Domain;
 using Poll.N.Quiz.Settings.EventStore.WriteOnly.Internal;
 using Poll.N.Quiz.Settings.Domain.Extensions;
-using Poll.N.Quiz.Settings.Domain.Internal;
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.EventStore.WriteOnly;
@@ -76,8 +76,7 @@ public class MongoWriteOnlySettingsEventStoreTests()
         await Assert.That(savedSettingsCreateEvent.EventType).IsEqualTo(eventToSave.EventType)
             .And.IsEqualTo(SettingsEventType.CreateEvent);
         await Assert.That(savedSettingsCreateEvent.TimeStamp).IsEqualTo(eventToSave.TimeStamp);
-        await Assert.That(savedSettingsCreateEvent.ServiceName).IsEqualTo(eventToSave.ServiceName);
-        await Assert.That(savedSettingsCreateEvent.EnvironmentName).IsEqualTo(eventToSave.EnvironmentName);
+        await Assert.That(savedSettingsCreateEvent.Metadata).IsEqualTo(eventToSave.Metadata);
         await Assert.That(savedSettingsCreateEvent.JsonData).IsEqualTo(eventToSave.JsonData);
     }
 
@@ -106,11 +105,10 @@ public class MongoWriteOnlySettingsEventStoreTests()
     {
         // Arrange
         var collection = GetSettingsUpdateMongoCollection();
-        var serviceName = "service1";
-        var environmentName = "environment1";
+        var serviceMetadata = new SettingsMetadata("service1", "environment1");
         var allEvents = TestSettingsEventFactory
             .CreateSettingsEvents()
-            .Where(se => se.ServiceName == serviceName && se.EnvironmentName  == environmentName)
+            .Where(se => se.Metadata == serviceMetadata)
             .ToArray();
 
         await collection.InsertManyAsync(
@@ -137,8 +135,7 @@ public class MongoWriteOnlySettingsEventStoreTests()
         await Assert.That(savedSettingsUpdateEvent.EventType).IsEqualTo(eventToSave.EventType)
             .And.IsEqualTo(SettingsEventType.UpdateEvent);
         await Assert.That(savedSettingsUpdateEvent.TimeStamp).IsEqualTo(eventToSave.TimeStamp);
-        await Assert.That(savedSettingsUpdateEvent.ServiceName).IsEqualTo(eventToSave.ServiceName);
-        await Assert.That(savedSettingsUpdateEvent.EnvironmentName).IsEqualTo(eventToSave.EnvironmentName);
+        await Assert.That(savedSettingsUpdateEvent.Metadata).IsEqualTo(eventToSave.Metadata);
         await Assert.That(savedSettingsUpdateEvent.JsonData).IsEqualTo(eventToSave.JsonData);
     }
 
@@ -148,11 +145,10 @@ public class MongoWriteOnlySettingsEventStoreTests()
     {
         // Arrange
         var collection = GetSettingsUpdateMongoCollection();
-        var serviceName = "service1";
-        var environmentName = "environment1";
+        var serviceMetadata = new SettingsMetadata("service1", "environment1");
         var allEvents = TestSettingsEventFactory
             .CreateSettingsEvents()
-            .Where(se => se.ServiceName == serviceName && se.EnvironmentName  == environmentName)
+            .Where(se => se.Metadata == serviceMetadata)
             .ToArray();
 
         await collection.InsertManyAsync(

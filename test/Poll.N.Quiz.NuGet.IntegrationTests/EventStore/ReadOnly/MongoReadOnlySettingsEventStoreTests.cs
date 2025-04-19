@@ -1,5 +1,5 @@
+using Poll.N.Quiz.Settings.Domain;
 using Poll.N.Quiz.Settings.EventStore.ReadOnly.Internal;
-using Poll.N.Quiz.Settings.Domain.Internal;
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.EventStore.ReadOnly;
@@ -20,16 +20,16 @@ public class MongoReadOnlySettingsEventStoreTests()
         // Arrange
         var readOnlySettingsUpdateEventStore =
             new MongoReadOnlySettingsEventStore(_seededMongoDbFixture.MongoClient!);
-        var serviceName = "service1";
-        var environmentName = "environment1";
+        var settingsMetadata =
+            new SettingsMetadata("service1", "environment1");
         var expectedEvents = TestSettingsEventFactory
                 .CreateSettingsEvents()
-                .Where(se => se.ServiceName == serviceName && se.EnvironmentName == environmentName)
+                .Where(se => se.Metadata == settingsMetadata)
                 .ToArray();
 
         // Act
         var actualEvents =
-            await readOnlySettingsUpdateEventStore.GetEventsAsync(serviceName, environmentName);
+            await readOnlySettingsUpdateEventStore.GetAsync(settingsMetadata);
 
         // Assert
         await Assert.That(actualEvents).IsNotNull();
@@ -38,35 +38,20 @@ public class MongoReadOnlySettingsEventStoreTests()
     }
 
     [Test]
-    public async Task GetEventsAsync_ReturnsEmptyCollection_WhenServiceNameIsMissing()
+    [Arguments("", "environment1")]
+    [Arguments("service1", "")]
+    public async Task GetEventsAsync_ReturnsEmptyCollection_WhenServiceOrEnvironmentNameIsMissing
+        (string serviceName, string environmentName)
     {
         // Arrange
         var readOnlySettingsUpdateEventStore =
             new MongoReadOnlySettingsEventStore(_seededMongoDbFixture.MongoClient!);
-        var serviceName = string.Empty;
-        var environmentName = "environment1";
+        var settingsMetadata =
+            new SettingsMetadata(serviceName, environmentName);
 
         // Act
         var actualEvents =
-            await readOnlySettingsUpdateEventStore.GetEventsAsync(serviceName, environmentName);
-
-        // Assert
-        await Assert.That(actualEvents).IsNotNull();
-        await Assert.That(actualEvents).IsEmpty();
-    }
-
-    [Test]
-    public async Task GetEventsAsync_ReturnsEmptyCollection_WhenEnvironmentNameIsMissing()
-    {
-        // Arrange
-        var readOnlySettingsUpdateEventStore =
-            new MongoReadOnlySettingsEventStore(_seededMongoDbFixture.MongoClient!);
-        var serviceName = "service1";
-        var environmentName = string.Empty;
-
-        // Act
-        var actualEvents =
-            await readOnlySettingsUpdateEventStore.GetEventsAsync(serviceName, environmentName);
+            await readOnlySettingsUpdateEventStore.GetAsync(settingsMetadata);
 
         // Assert
         await Assert.That(actualEvents).IsNotNull();
@@ -81,7 +66,7 @@ public class MongoReadOnlySettingsEventStoreTests()
         var expectedEvents = TestSettingsEventFactory.CreateSettingsEvents();
 
         // Act
-        var actualEvents = await readOnlySettingsUpdateEventStore.GetAllEventsAsync();
+        var actualEvents = await readOnlySettingsUpdateEventStore.GetAllAsync();
 
         // Assert
         await Assert.That(actualEvents).IsNotNull();

@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.ReadOnly\Poll.N.Quiz.Settings.Projection.ReadOnly.csproj" />
+    <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.ProjectionStore.ReadOnly\Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.csproj" />
   </ItemGroup>
 </Project>

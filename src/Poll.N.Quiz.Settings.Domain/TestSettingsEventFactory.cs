@@ -1,11 +1,10 @@
-
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
-namespace Poll.N.Quiz.Settings.Domain.Internal;
+namespace Poll.N.Quiz.Settings.Domain;
 
-internal static class TestSettingsEventFactory
+public static class TestSettingsEventFactory
 {
-    internal static IEnumerable<SettingsEvent> CreateSettingsEvents()
+    public static IEnumerable<SettingsEvent> CreateSettingsEvents()
     {
         var now = Convert.ToUInt32(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
@@ -33,14 +32,14 @@ internal static class TestSettingsEventFactory
             (SettingsEventType.UpdateEvent,new SettingsMetadata(service2, environment2),now + 500, 1, TrimJson(Settings2Patch1));
     }
 
-    internal static SettingsEvent CreateSettingsUpdateEvent() =>
+    public static SettingsEvent CreateSettingsUpdateEvent() =>
         CreateSettingsEvents().First(se => se.EventType is SettingsEventType.UpdateEvent);
 
-    internal static SettingsEvent CreateSettingsCreateEvent() =>
+    public static SettingsEvent CreateSettingsCreateEvent() =>
         CreateSettingsEvents().First(se => se.EventType is SettingsEventType.CreateEvent);
 
 
-    internal static string GetExpectedResultSettings(string serviceName, string environmentName)
+    public static string GetExpectedResultSettings(string serviceName, string environmentName)
     {
         if(serviceName == "service1" && environmentName == "environment1")
             return ExpectedResultSettings1;

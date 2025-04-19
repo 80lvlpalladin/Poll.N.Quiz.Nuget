@@ -3,7 +3,7 @@
 
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.Projection.WriteOnly\Poll.N.Quiz.Settings.Projection.WriteOnly.csproj" />
+      <ProjectReference Include="..\..\src\Poll.N.Quiz.Settings.ProjectionStore.WriteOnly\Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.csproj" />
     </ItemGroup>
 
 </Project>

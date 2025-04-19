@@ -18,7 +18,7 @@ internal class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, 
             .GetDatabase(DatabaseName)
             .GetCollection<BsonDocument>(CollectionName);
 
-        InitializeIndexesForSettingsEventCollection();
+        InitializeIndexesForSettingsEventCollection(_settingsEventCollection);
     }
 
     /// <returns>If save was successful</returns>
@@ -51,8 +51,8 @@ internal class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, 
             var anyEventsExist = await _settingsEventCollection
                 .AsQueryable()
                 .AnyAsync(se =>
-                    se[nameof(SettingsMetadata.ServiceName)].AsString == @event.Metadata.ServiceName &&
-                    se[nameof(SettingsMetadata.EnvironmentName)].AsString == @event.Metadata.EnvironmentName);
+                    se[nameof(SettingsEvent.Metadata)][nameof(SettingsMetadata.ServiceName)].AsString == @event.Metadata.ServiceName &&
+                    se[nameof(SettingsEvent.Metadata)][nameof(SettingsMetadata.EnvironmentName)].AsString == @event.Metadata.EnvironmentName);
 
             return !anyEventsExist;
         }
@@ -61,8 +61,8 @@ internal class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, 
         {
             var lastSavedEvent =
                 _settingsEventCollection.AsQueryable().Last(se =>
-                    se[nameof(SettingsMetadata.ServiceName)].AsString == @event.Metadata.ServiceName &&
-                    se[nameof(SettingsMetadata.EnvironmentName)].AsString == @event.Metadata.EnvironmentName);
+                    se[nameof(SettingsEvent.Metadata)][nameof(SettingsMetadata.ServiceName)].AsString == @event.Metadata.ServiceName &&
+                    se[nameof(SettingsEvent.Metadata)][nameof(SettingsMetadata.EnvironmentName)].AsString == @event.Metadata.EnvironmentName);
 
             if (lastSavedEvent is null)
                 return false;
@@ -74,7 +74,7 @@ internal class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, 
         return true;
     }
 
-    private void InitializeIndexesForSettingsEventCollection()
+    internal static void InitializeIndexesForSettingsEventCollection(IMongoCollection<BsonDocument> collection)
     {
         var compoundIndexModel = new CreateIndexModel<BsonDocument>(
             Builders<BsonDocument>.IndexKeys
@@ -83,11 +83,10 @@ internal class MongoWriteOnlySettingsEventStore : IWriteOnlySettingsEventStore, 
                 .Text(nameof(SettingsMetadata.EnvironmentName))
                 .Text(nameof(SettingsEvent.EventType)));
 
-        var createdIndex = _settingsEventCollection.Indexes.CreateOne(compoundIndexModel);
+        var createdIndex = collection.Indexes.CreateOne(compoundIndexModel);
 
         if (createdIndex is null)
             throw new InvalidOperationException("Failed to create index for SettingsEvent collection");
-
     }
 
     public void Dispose()

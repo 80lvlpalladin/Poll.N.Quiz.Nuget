@@ -1,5 +1,7 @@
+using Poll.N.Quiz.Settings.Domain;
 using Poll.N.Quiz.Settings.FileStore.ReadOnly.Internal;
-using Poll.N.Quiz.Settings.Domain.Internal;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
+using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.FileStore.ReadOnly;
 
@@ -34,13 +36,13 @@ public class ReadOnlySettingsFileStoreTests
     public async Task GetSettingsAsync_JsonData_IfFileExists()
     {
         // Arrange
-        var serviceName = "service1";
-        var environmentName = "environment1";
-        var expectedJsonData = TestSettingsEventFactory.GetExpectedResultSettings(serviceName, environmentName);
+        var settingsMetadata = new SettingsMetadata("service1", "environment1");
+        var expectedJsonData = TestSettingsEventFactory.GetExpectedResultSettings
+            (settingsMetadata.ServiceName, settingsMetadata.EnvironmentName);
         var settingsFileStore = new ReadOnlySettingsFileStore(TemporarySettingsFilesDirectory);
 
         // Act
-        var actualJsonData = await settingsFileStore.GetSettingsAsync(serviceName, environmentName);
+        var actualJsonData = await settingsFileStore.GetSettingsContentAsync(settingsMetadata);
 
         // Assert
         await Assert.That(actualJsonData).IsEqualTo(expectedJsonData);
@@ -50,13 +52,12 @@ public class ReadOnlySettingsFileStoreTests
     public async Task GetSettingsAsync_ThrowsFileNotFoundException_IfFileDoesNotExist()
     {
         // Arrange
-        var serviceName = "service3";
-        var environmentName = "environment3";
+        var settingsMetadata = new SettingsMetadata("service3", "environment3");
         var settingsFileStore = new ReadOnlySettingsFileStore(TemporarySettingsFilesDirectory);
 
         // Act
         var act =
-            async () => await settingsFileStore.GetSettingsAsync(serviceName, environmentName);
+            async () => await settingsFileStore.GetSettingsContentAsync(settingsMetadata);
 
         // Assert
         await Assert.That(act).Throws<FileNotFoundException>();
@@ -69,8 +70,8 @@ public class ReadOnlySettingsFileStoreTests
         var settingsFileStore = new ReadOnlySettingsFileStore(TemporarySettingsFilesDirectory);
         var expectedMetadata = new[]
         {
-            ("service1", "environment1"),
-            ("service2", "environment2")
+            new SettingsMetadata("service1", "environment1"),
+            new SettingsMetadata("service2", "environment2"),
         };
 
         // Act

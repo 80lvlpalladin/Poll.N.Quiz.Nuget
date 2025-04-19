@@ -20,18 +20,77 @@ public sealed class SettingsAggregate
     public SettingsProjection? CurrentProjection { get; private set; }
     public  SettingsMetadata Metadata { get; }
 
-    public ErrorOr<Success> ApplyEvent(SettingsEvent settingsEvent)
+    // public ErrorOr<Success> ApplyEvent(SettingsEvent settingsEvent)
+    // {
+    //     var validateResult = Validate(settingsEvent);
+    //
+    //     if (validateResult.IsError)
+    //         return validateResult.FirstError;
+    //
+    //     return CreateOrUpdateCurrentProjection(settingsEvent);
+    // }
+
+    [MemberNotNullWhen(true, nameof(CurrentProjection))]
+    public bool TryApplyEvent
+        (SettingsEvent settingsEvent, [NotNullWhen(false)] out Error? error)
     {
         var validateResult = Validate(settingsEvent);
 
         if (validateResult.IsError)
-            return validateResult.FirstError;
+        {
+            error = validateResult.FirstError;
+            return false;
+        }
 
-        return CreateOrUpdateCurrentProjection(settingsEvent);
+        if (!TryUpdateCurrentProjection(settingsEvent, out var updateProjectionError))
+        {
+            error = updateProjectionError;
+            return false;
+        }
+
+        error = null;
+        return true;
     }
 
+    [MemberNotNullWhen(true, nameof(CurrentProjection))]
+    private bool TryUpdateCurrentProjection
+        (SettingsEvent settingsEvent, [NotNullWhen(false)] out Error? error)
+    {
+        if (settingsEvent.EventType is SettingsEventType.CreateEvent && CurrentProjection is null)
+        {
+            CurrentProjection = new SettingsProjection(
+                settingsEvent.JsonData,
+                settingsEvent.TimeStamp,
+                settingsEvent.Version);
+            error = null;
+            return true;
+        }
 
-    private ErrorOr<Success> CreateOrUpdateCurrentProjection(SettingsEvent settingsEvent)
+        if (settingsEvent.EventType is SettingsEventType.UpdateEvent && CurrentProjection is not null)
+        {
+            var applyJsonPatchResult =
+                ApplyJsonPatch(CurrentProjection.JsonData, settingsEvent.JsonData);
+
+            if (applyJsonPatchResult.IsError)
+            {
+                error = applyJsonPatchResult.FirstError;
+                return false;
+            }
+
+            CurrentProjection = new SettingsProjection(
+                applyJsonPatchResult.Value,
+                settingsEvent.TimeStamp,
+                settingsEvent.Version);
+
+            error = null;
+            return true;
+        }
+
+        error = Error.Failure("SettingsAggregate state is invalid");
+        return false;
+    }
+
+    /*private ErrorOr<Success> CreateOrUpdateCurrentProjection(SettingsEvent settingsEvent)
     {
         if (settingsEvent.EventType is SettingsEventType.CreateEvent && CurrentProjection is null)
         {
@@ -60,7 +119,7 @@ public sealed class SettingsAggregate
         }
 
         return Error.Failure("SettingsAggregate state is invalid");
-    }
+    }*/
 
     private ErrorOr<Success> Validate(SettingsEvent settingsEvent)
     {

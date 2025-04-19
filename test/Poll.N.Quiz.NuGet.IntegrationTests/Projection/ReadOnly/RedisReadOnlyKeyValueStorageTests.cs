@@ -1,10 +1,10 @@
 using Bogus;
-using Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
+using Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.Internal;
 using Testcontainers.Redis;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.Projection.ReadOnly;
 
-public class RedisReadOnlyStorageTests
+public class RedisReadOnlyKeyValueStorageTests
 {
     private static readonly RedisContainer RedisContainer = new RedisBuilder().Build();
 
@@ -26,7 +26,7 @@ public class RedisReadOnlyStorageTests
     {
         // Arrange
         IReadOnlyKeyValueStorage storage =
-            new RedisReadOnlySettingsProjection(RedisContainer.GetConnectionString());
+            new RedisReadOnlyKeyValueStorage(RedisContainer.GetConnectionString());
 
         // Act
         var isEmpty = await storage.IsEmptyAsync();
@@ -41,7 +41,7 @@ public class RedisReadOnlyStorageTests
     {
         // Arrange
         IReadOnlyKeyValueStorage storage =
-            new RedisReadOnlySettingsProjection(RedisContainer.GetConnectionString());
+            new RedisReadOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var command = new List<string>{ "redis-cli", "SET", "key1", "value1" };
         await RedisContainer.ExecAsync(command);
 
@@ -58,7 +58,7 @@ public class RedisReadOnlyStorageTests
     {
         // Arrange
         IReadOnlyKeyValueStorage storage =
-            new RedisReadOnlySettingsProjection(RedisContainer.GetConnectionString());
+            new RedisReadOnlyKeyValueStorage(RedisContainer.GetConnectionString());
 
         // Act
         var result = await storage.GetAsync<string>("service1__environment1");
@@ -73,7 +73,7 @@ public class RedisReadOnlyStorageTests
     {
         // Arrange
         IReadOnlyKeyValueStorage storage =
-            new RedisReadOnlySettingsProjection(RedisContainer.GetConnectionString());
+            new RedisReadOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var expectedValue = "{ 'field1' : 'value1' }";
         var command = new List<string>{ "redis-cli", "SET", "service1__environment1", expectedValue };
         await RedisContainer.ExecAsync(command);
@@ -91,7 +91,7 @@ public class RedisReadOnlyStorageTests
     {
         // Arrange
         IReadOnlyKeyValueStorage storage =
-            new RedisReadOnlySettingsProjection(RedisContainer.GetConnectionString());
+            new RedisReadOnlyKeyValueStorage(RedisContainer.GetConnectionString());
 
         // Act
         var keys = await storage.ListAllKeysAsync(CancellationToken.None);
@@ -106,7 +106,7 @@ public class RedisReadOnlyStorageTests
     {
         // Arrange
         IReadOnlyKeyValueStorage storage =
-            new RedisReadOnlySettingsProjection(RedisContainer.GetConnectionString());
+            new RedisReadOnlyKeyValueStorage(RedisContainer.GetConnectionString());
         var keyValuePairs = FakeData.GenerateKeyValuePairs().ToArray();
 
         foreach (var kv in keyValuePairs)

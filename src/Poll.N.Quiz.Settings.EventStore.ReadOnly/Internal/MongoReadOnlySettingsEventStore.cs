@@ -23,8 +23,8 @@ internal class MongoReadOnlySettingsEventStore(IMongoClient mongoClient)
         var bsonDocuments = await _settingsUpdateEventCollection
             .AsQueryable()
             .Where(bson =>
-                bson[nameof(SettingsMetadata.ServiceName)].AsString == settingsMetadata.ServiceName &&
-                bson[nameof(SettingsMetadata.EnvironmentName)].AsString == settingsMetadata.EnvironmentName)
+                bson[nameof(SettingsEvent.Metadata)][nameof(SettingsMetadata.ServiceName)].AsString == settingsMetadata.ServiceName &&
+                bson[nameof(SettingsEvent.Metadata)][nameof(SettingsMetadata.EnvironmentName)].AsString == settingsMetadata.EnvironmentName)
             .ToListAsync(cancellationToken);
 
         return bsonDocuments.Select(bsonDoc => bsonDoc.ToSettingsEvent()).ToArray();

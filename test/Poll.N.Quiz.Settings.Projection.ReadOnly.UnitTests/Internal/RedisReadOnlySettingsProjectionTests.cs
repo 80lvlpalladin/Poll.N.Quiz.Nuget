@@ -1,7 +1,6 @@
-using System.Text.Json;
 using Moq;
-using Poll.N.Quiz.Settings.Projection.ReadOnly.Entities;
-using Poll.N.Quiz.Settings.Projection.ReadOnly.Internal;
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
+using Poll.N.Quiz.Settings.ProjectionStore.ReadOnly.Internal;
 using Assert = TUnit.Assertions.Assert;
 
 namespace Poll.N.Quiz.Settings.Projection.ReadOnly.UnitTests.Internal;
@@ -22,11 +21,12 @@ public class RedisReadOnlySettingsProjectionTests
                 "service2__environment3"]);
 
 
-        var settingsProjectionRepository = new RedisReadOnlySettingsProjection(redisReadOnlyStorageMock.Object);
+        var settingsProjectionRepository = new RedisReadOnlySettingsProjectionStore(redisReadOnlyStorageMock.Object);
         var expectedMetadata = new[]
         {
-            new SettingsMetadata("service1", [ "environment1", "environment2" ]),
-            new SettingsMetadata("service2", [ "environment3" ])
+            new SettingsMetadata("service1", "environment1"),
+            new SettingsMetadata("service1", "environment2"),
+            new SettingsMetadata("service2", "environment3")
         };
 
         // Act
@@ -44,7 +44,6 @@ public class RedisReadOnlySettingsProjectionTests
         {
             await Assert.That(actualMetadata[i]).IsEquivalentTo(expectedMetadata[i]);
         }
-
     }
 
     [Test]
@@ -56,7 +55,7 @@ public class RedisReadOnlySettingsProjectionTests
             .Setup(storage =>
                 storage.ListAllKeysAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync([]);
-        var settingsProjectionRepository = new RedisReadOnlySettingsProjection(redisReadOnlyStorageMock.Object);
+        var settingsProjectionRepository = new RedisReadOnlySettingsProjectionStore(redisReadOnlyStorageMock.Object);
 
         // Act
         var actualMetadata =
@@ -73,6 +72,7 @@ public class RedisReadOnlySettingsProjectionTests
         //Arrange
         var serviceName = "service1";
         var environmentName = "environment1";
+        var settingsMetadata = new SettingsMetadata(serviceName, environmentName);
         var expectedKey = $"{serviceName}__{environmentName}";
         uint expectedLastUpdatedTimeStamp = 123124132;
         uint expectedVersion = 0;
@@ -83,24 +83,26 @@ public class RedisReadOnlySettingsProjectionTests
               "Settings": {"key1": "value1"}
               }
               """.Replace("\n", "").Replace(" ", "");
-        var expectedValue = new ProjectionModel
-            (expectedVersion, expectedLastUpdatedTimeStamp, expectedSettings);
+        var expectedValue =
+            new SettingsProjection(expectedSettings, expectedLastUpdatedTimeStamp, expectedVersion);
 
         var redisReadOnlyStorageMock = new Mock<IReadOnlyKeyValueStorage>();
         redisReadOnlyStorageMock
-            .Setup(storage => storage.GetAsync<ProjectionModel>(expectedKey))
+            .Setup(storage => storage.GetAsync<SettingsProjection>(expectedKey))
             .ReturnsAsync(expectedValue);
 
-        var settingsProjection = new RedisReadOnlySettingsProjection(redisReadOnlyStorageMock.Object);
+        var settingsProjection =
+            new RedisReadOnlySettingsProjectionStore(redisReadOnlyStorageMock.Object);
 
         //Act
         var actualProjection =
-            await settingsProjection.GetAsync(serviceName, environmentName);
+            await settingsProjection.GetAsync(settingsMetadata);
 
         //Assert
         await Assert.That(actualProjection).IsNotNull();
-        await Assert.That(actualProjection!.Value.lastUpdatedTimestamp).IsEqualTo(expectedLastUpdatedTimeStamp);
-        await Assert.That(actualProjection.Value.settingsJson).IsEqualTo(expectedSettings);
+        await Assert.That(actualProjection!.LastUpdatedTimestamp).IsEqualTo(expectedLastUpdatedTimeStamp);
+        await Assert.That(actualProjection!.JsonData).IsEqualTo(expectedSettings);
+        await Assert.That(actualProjection!.Version).IsEqualTo(expectedVersion);
     }
 
     [Test]
@@ -109,17 +111,18 @@ public class RedisReadOnlySettingsProjectionTests
         //Arrange
         var serviceName = "service1";
         var environmentName = "environment1";
+        var settingsMetadata = new SettingsMetadata(serviceName, environmentName);
         var expectedKey = $"{serviceName}__{environmentName}";
-        ProjectionModel? expectedValue = null;
+        SettingsProjection? expectedValue = null;
         var redisReadOnlyStorageMock = new Mock<IReadOnlyKeyValueStorage>();
         redisReadOnlyStorageMock
-            .Setup(storage => storage.GetAsync<ProjectionModel>(expectedKey))
+            .Setup(storage => storage.GetAsync<SettingsProjection>(expectedKey))
             .ReturnsAsync(expectedValue);
-        var settingsProjection = new RedisReadOnlySettingsProjection(redisReadOnlyStorageMock.Object);
+        var settingsProjection = new RedisReadOnlySettingsProjectionStore(redisReadOnlyStorageMock.Object);
 
         //Act
         var actualProjection =
-            await settingsProjection.GetAsync(serviceName, environmentName);
+            await settingsProjection.GetAsync(settingsMetadata);
 
         //Assert
         await Assert.That(actualProjection).IsNull();
@@ -135,7 +138,7 @@ public class RedisReadOnlySettingsProjectionTests
         redisReadOnlyStorageMock
             .Setup(storage => storage.IsEmptyAsync())
             .ReturnsAsync(readOnlyStorageEmpty);
-        var settingsProjection = new RedisReadOnlySettingsProjection(redisReadOnlyStorageMock.Object);
+        var settingsProjection = new RedisReadOnlySettingsProjectionStore(redisReadOnlyStorageMock.Object);
 
         // Act
         var projectionEmpty = await settingsProjection.IsEmptyAsync();

@@ -1,3 +1,4 @@
+using Poll.N.Quiz.Settings.Domain.ValueObjects;
 using Poll.N.Quiz.Settings.FileStore.ReadOnly.Internal;
 using Poll.N.Quiz.Settings.FileStore.WriteOnly.Internal;
 
@@ -20,8 +21,7 @@ public class WriteOnlySettingsFileStorageTests
         //Arrange
         var writeOnlySettingsFileStore = new WriteOnlySettingsFileStore(TemporarySettingsFilesDirectory);
         var readWriteSettingsFileStore = new ReadOnlySettingsFileStore(TemporarySettingsFilesDirectory);
-        const string serviceName = "service1";
-        const string environmentName = "environment1";
+        var settingsMetadata = new SettingsMetadata("service1", "environment1");
         string[] settingsFilesContents = [
             "version1",
             "version2",
@@ -34,13 +34,11 @@ public class WriteOnlySettingsFileStorageTests
 
         //Act
         await Task.WhenAll(settingsFilesContents.Select(settingsFileContent =>
-            writeOnlySettingsFileStore.SaveAsync(serviceName, environmentName, settingsFileContent)));
-
-
+            writeOnlySettingsFileStore.SaveAsync(settingsMetadata, settingsFileContent)));
 
         //Assert
         var actualSavedSettings =
-            await readWriteSettingsFileStore.GetSettingsAsync(serviceName, environmentName);
+            await readWriteSettingsFileStore.GetSettingsContentAsync(settingsMetadata);
 
         await Assert.That(actualSavedSettings).IsEqualTo(expectedSavedSettings);
     }
@@ -52,6 +50,7 @@ public class WriteOnlySettingsFileStorageTests
         var writeOnlySettingsFileStore = new WriteOnlySettingsFileStore(TemporarySettingsFilesDirectory);
         const string serviceName = "service2";
         const string environmentName = "environment2";
+        var settingsMetadata = new SettingsMetadata(serviceName, environmentName);
         var filePath = Path.Combine(TemporarySettingsFilesDirectory, $"{serviceName}_{environmentName}.json");
         await using var fileLock = new FileStream(
             filePath,
@@ -62,23 +61,26 @@ public class WriteOnlySettingsFileStorageTests
 
         //Act
         var act =
-            async () => await writeOnlySettingsFileStore.SaveAsync(serviceName, environmentName, "version1");
+            async () => await writeOnlySettingsFileStore.SaveAsync(settingsMetadata, "version1");
 
         // Assert
-        await Assert.That(act).Throws<IOException>();
+        await Assert.ThrowsAsync<IOException>(act);
     }
 
     [Test]
-    public async Task Constructor_ThrowsArgumentException_IfPathIsNotFullyQualified()
+    public void Constructor_ThrowsArgumentException_IfPathIsNotFullyQualified()
     {
         // Arrange
         var notFullPath = "TemporarySettingsFiles";
 
         // Act
-        var act = () => new WriteOnlySettingsFileStore(notFullPath);
+        var act = () =>
+        {
+            _ = new WriteOnlySettingsFileStore(notFullPath);
+        };
 
         // Assert
-        await Assert.That(act).Throws<ArgumentException>();
+        Assert.Throws<ArgumentException>(act);
     }
 
 }

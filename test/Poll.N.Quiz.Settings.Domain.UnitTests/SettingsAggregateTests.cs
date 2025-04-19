@@ -1,5 +1,4 @@
 using ErrorOr;
-using Poll.N.Quiz.Settings.Domain.Internal;
 using Poll.N.Quiz.Settings.Domain.ValueObjects;
 
 
@@ -19,10 +18,10 @@ public class SettingsAggregateTests
 
         // Act
         var settingsAggregate = new SettingsAggregate(settingsCreateEvent.Metadata);
-        var applyResult = settingsAggregate.ApplyEvent(settingsCreateEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsCreateEvent, out _);
 
         // Assert
-        await Assert.That(applyResult.IsError).IsFalse();
+        await Assert.That(applyResult).IsTrue();
         await Assert.That(settingsAggregate.Metadata).IsEqualTo(settingsCreateEvent.Metadata);
         await Assert.That(settingsAggregate.CurrentProjection).IsEqualTo(expectedCurrentProjection);
     }
@@ -50,10 +49,10 @@ public class SettingsAggregateTests
 
         // Act
         var settingsAggregate = new SettingsAggregate(settingsUpdateEvent.Metadata, initialProjection);
-        var applyResult = settingsAggregate.ApplyEvent(settingsUpdateEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsUpdateEvent, out _);
 
         // Assert
-        await Assert.That(applyResult.IsError).IsFalse();
+        await Assert.That(applyResult).IsTrue();
         await Assert.That(settingsAggregate.Metadata).IsEqualTo(settingsCreateEvent.Metadata);
         await Assert.That(settingsAggregate.CurrentProjection).IsEqualTo(expectedCurrentProjection);
     }
@@ -82,10 +81,10 @@ public class SettingsAggregateTests
         // Act
         foreach (var settingsEvent in settingsEvents)
         {
-            var applyResult = settingsAggregate.ApplyEvent(settingsEvent);
+            var applyResult = settingsAggregate.TryApplyEvent(settingsEvent, out var error);
 
-            if(applyResult.IsError)
-                throw new InvalidOperationException($"Failed to apply event: {applyResult.FirstError}");
+            if(!applyResult)
+                throw new InvalidOperationException($"Failed to apply event: {error!.Value.Description}");
         }
 
         // Assert
@@ -102,11 +101,11 @@ public class SettingsAggregateTests
             new SettingsMetadata("wrongService", "wrongEnvironment"));
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsCreateEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsCreateEvent, out var error);
 
         // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -117,11 +116,11 @@ public class SettingsAggregateTests
         var settingsAggregate = new SettingsAggregate(settingsCreateEvent.Metadata);
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsCreateEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsCreateEvent, out var error);
 
         // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -134,11 +133,11 @@ public class SettingsAggregateTests
             new SettingsProjection("not-json", 0, 0));
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsCreateEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsCreateEvent, out var error);
 
-        // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        //Assert
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -149,11 +148,11 @@ public class SettingsAggregateTests
         var settingsAggregate = new SettingsAggregate(settingsUpdateEvent.Metadata);
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsUpdateEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsUpdateEvent, out var error);
 
-        // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        //Assert
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -173,11 +172,12 @@ public class SettingsAggregateTests
         var settingsAggregate = new SettingsAggregate(settingsUpdateEvent.Metadata, initialProjection);
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsUpdateEvent with { Version = 100 });
+        var applyResult = settingsAggregate.TryApplyEvent
+            (settingsUpdateEvent with { Version = 100 }, out var error);
 
-        // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        //Assert
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -197,11 +197,12 @@ public class SettingsAggregateTests
         var settingsAggregate = new SettingsAggregate(settingsUpdateEvent.Metadata, initialProjection);
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsUpdateEvent with { TimeStamp = 1 });
+        var applyResult = settingsAggregate.TryApplyEvent
+            (settingsUpdateEvent with { TimeStamp = 1 }, out var error);
 
-        // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        //Assert
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -221,11 +222,12 @@ public class SettingsAggregateTests
         var settingsAggregate = new SettingsAggregate(settingsUpdateEvent.Metadata, initialProjection);
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsUpdateEvent with { TimeStamp = 1 });
+        var applyResult = settingsAggregate.TryApplyEvent
+            (settingsUpdateEvent with { TimeStamp = 1 }, out var error);
 
-        // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        //Assert
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 
     [Test]
@@ -239,10 +241,10 @@ public class SettingsAggregateTests
         var settingsAggregate = new SettingsAggregate(settingsEvent.Metadata);
 
         // Act
-        var applyResult = settingsAggregate.ApplyEvent(settingsEvent);
+        var applyResult = settingsAggregate.TryApplyEvent(settingsEvent, out var error);
 
-        // Assert
-        await Assert.That(applyResult.IsError).IsTrue();
-        await Assert.That(applyResult.FirstError.Type).IsEqualTo(ErrorType.Validation);
+        //Assert
+        await Assert.That(applyResult).IsFalse();
+        await Assert.That(error!.Value.Type).IsEqualTo(ErrorType.Validation);
     }
 }

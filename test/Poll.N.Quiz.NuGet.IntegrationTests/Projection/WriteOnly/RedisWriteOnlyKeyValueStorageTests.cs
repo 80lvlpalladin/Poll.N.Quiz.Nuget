@@ -1,5 +1,5 @@
 using DotNet.Testcontainers.Containers;
-using Poll.N.Quiz.Settings.Projection.WriteOnly.Internal;
+using Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.Internal;
 using Testcontainers.Redis;
 
 namespace Poll.N.Quiz.NuGet.IntegrationTests.Projection.WriteOnly;
