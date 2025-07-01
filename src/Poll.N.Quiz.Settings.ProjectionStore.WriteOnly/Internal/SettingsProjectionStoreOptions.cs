@@ -1,8 +1,8 @@
 namespace Poll.N.Quiz.Settings.ProjectionStore.WriteOnly.Internal;
 
-internal class SettingsProjectionStoreOptions
+public class SettingsProjectionStoreOptions
 {
-    internal const string SectionName = "SettingsProjectionStore";
+    public const string SectionName = "SettingsProjectionStore";
 
-    internal ushort ExpirationTimeHours { get; init; }
+    public ushort ExpirationTimeHours { get; init; }
 }

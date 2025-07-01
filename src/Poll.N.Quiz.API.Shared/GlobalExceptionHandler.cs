@@ -14,7 +14,7 @@ public class GlobalExceptionHandler(string? environment, ILogger<GlobalException
         CancellationToken cancellationToken)
     {
         var correlationId = exception.Source ?? string.Empty;
-        Shared.GlobalLogger.LogException(logger, exception.Message, correlationId, exception);
+        GlobalLogger.LogException(logger, exception.Message, correlationId, exception);
 
         var problemDetails = new ProblemDetails
         {

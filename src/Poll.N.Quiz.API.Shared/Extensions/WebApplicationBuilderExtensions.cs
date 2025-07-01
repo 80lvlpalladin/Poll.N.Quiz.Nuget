@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using ConfigurationException = Poll.N.Quiz.API.Shared.Exceptions.ConfigurationException;
 
 namespace Poll.N.Quiz.API.Shared.Extensions;
 
@@ -21,10 +20,7 @@ public static class WebApplicationBuilderExtensions
             var configurationSection = "RateLimiting:ConcurrentRequestsLimit";
 
             concurrentRequestsLimit =
-                builder.Configuration.GetSection(configurationSection).Get<int>();
-
-            if (concurrentRequestsLimit <= 0)
-                throw new ConfigurationException(configurationSection);
+                builder.Configuration.GetRequiredSection(configurationSection).Get<ushort>();
         }
 
 
@@ -61,24 +57,15 @@ public static class WebApplicationBuilderExtensions
         // Add Metrics for ASP.NET Core and our custom metrics and export via OTLP
         otelBuilder.WithMetrics(metrics =>
         {
-            // Metrics provider from OpenTelemetry
             metrics.AddAspNetCoreInstrumentation();
             metrics.AddRuntimeInstrumentation();
-
-            // Metrics provided by ASP.NET Core in .NET 8
-            metrics
-                .AddMeter("Microsoft.AspNetCore.Http")
-                .AddMeter("Microsoft.AspNetCore.Hosting")
-                .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
-                .AddMeter("Microsoft.AspNetCore.Http.Connections")
-                .AddMeter("Microsoft.AspNetCore.Routing")
-                .AddMeter("Microsoft.AspNetCore.Diagnostics")
-                .AddMeter("Microsoft.AspNetCore.RateLimiting");
+            metrics.AddHttpClientInstrumentation();
         });
 
         // Add Tracing for ASP.NET Core and our custom ActivitySource and export via OTLP
         otelBuilder.WithTracing(tracing =>
         {
+            tracing.AddSource(builder.Environment.ApplicationName);
             tracing.AddAspNetCoreInstrumentation();
             tracing.AddHttpClientInstrumentation();
         });

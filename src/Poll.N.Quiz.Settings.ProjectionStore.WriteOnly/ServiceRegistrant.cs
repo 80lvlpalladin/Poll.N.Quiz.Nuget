@@ -6,20 +6,17 @@ namespace Poll.N.Quiz.Settings.ProjectionStore.WriteOnly;
 
 public static class ServiceRegistrant
 {
-    public static IServiceCollection AddSettingsProjectionStoreOptions
-        (this IServiceCollection services, IConfiguration configuration) =>
-        services.Configure<SettingsProjectionStoreOptions>(
-            configuration.GetRequiredSection(SettingsProjectionStoreOptions.SectionName));
-
     public static IServiceCollection AddWriteOnlySettingsProjectionStore(
         this IServiceCollection services,
-        string connectionString)
+        IConfiguration configuration,
+        string projectionStoreConnectionString)
     {
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new ArgumentException("Settings projection connection string cannot be empty");
+        var optionsSection =
+            configuration.GetRequiredSection(SettingsProjectionStoreOptions.SectionName);
 
         return services
-            .AddSingleton<IWriteOnlyKeyValueStorage>(_ => new RedisWriteOnlyKeyValueStorage(connectionString))
+            .Configure<SettingsProjectionStoreOptions>(optionsSection)
+            .AddSingleton<IWriteOnlyKeyValueStorage>(_ => new RedisWriteOnlyKeyValueStorage(projectionStoreConnectionString))
             .AddSingleton<IWriteOnlySettingsProjectionStore, RedisWriteOnlySettingsProjectionStore>();
     }
 }

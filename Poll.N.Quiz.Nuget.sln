@@ -32,11 +32,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.FileSt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.FileStore.WriteOnly", "src\Poll.N.Quiz.Settings.FileStore.WriteOnly\Poll.N.Quiz.Settings.FileStore.WriteOnly.csproj", "{77752155-D1A5-4703-AE43-D4764BA469CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Aspire", "src\Poll.N.Quiz.Aspire\Poll.N.Quiz.Aspire.csproj", "{646BBC49-F941-42E2-AD66-55B8FEC50BE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.ServiceDiscovery", "src\Poll.N.Quiz.ServiceDiscovery\Poll.N.Quiz.ServiceDiscovery.csproj", "{646BBC49-F941-42E2-AD66-55B8FEC50BE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.EventQueue", "src\Poll.N.Quiz.Settings.EventQueue\Poll.N.Quiz.Settings.EventQueue.csproj", "{80235C60-D474-49AB-AA5E-04DEF1EEAAB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Settings.Domain.UnitTests", "test\Poll.N.Quiz.Settings.Domain.UnitTests\Poll.N.Quiz.Settings.Domain.UnitTests.csproj", "{F3B7019E-928F-4425-A468-A0BE71F82C2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poll.N.Quiz.Clients", "src\Poll.N.Quiz.Clients\Poll.N.Quiz.Clients.csproj", "{719E231E-9290-4CC1-83AB-5FF407FE64E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,6 +102,10 @@ Global
 		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3B7019E-928F-4425-A468-A0BE71F82C2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{719E231E-9290-4CC1-83AB-5FF407FE64E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{719E231E-9290-4CC1-83AB-5FF407FE64E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{719E231E-9290-4CC1-83AB-5FF407FE64E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{719E231E-9290-4CC1-83AB-5FF407FE64E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D287515-6A89-42E4-B797-C05A86FF4BA3} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
@@ -116,5 +122,6 @@ Global
 		{646BBC49-F941-42E2-AD66-55B8FEC50BE5} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
 		{80235C60-D474-49AB-AA5E-04DEF1EEAAB9} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
 		{F3B7019E-928F-4425-A468-A0BE71F82C2E} = {E3B00090-617E-4F15-B450-1FBFA131094C}
+		{719E231E-9290-4CC1-83AB-5FF407FE64E6} = {6080918B-A499-4D56-B0AB-7A785EAA94FE}
 	EndGlobalSection
 EndGlobal

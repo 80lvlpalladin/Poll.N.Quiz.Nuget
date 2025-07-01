@@ -7,9 +7,7 @@
 
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
       <PackageReference Include="StackExchange.Redis"/>
-    </ItemGroup>
 
-    <ItemGroup>
       <ProjectReference Include="..\Poll.N.Quiz.Settings.Domain\Poll.N.Quiz.Settings.Domain.csproj" />
     </ItemGroup>
 </Project>

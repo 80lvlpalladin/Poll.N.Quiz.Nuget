@@ -8,9 +8,7 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
       <PackageReference Include="StackExchange.Redis"/>
-    </ItemGroup>
 
-    <ItemGroup>
       <ProjectReference Include="..\Poll.N.Quiz.Settings.Domain\Poll.N.Quiz.Settings.Domain.csproj" />
     </ItemGroup>
 
