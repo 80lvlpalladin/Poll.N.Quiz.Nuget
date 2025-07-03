@@ -1,10 +1,10 @@
 // ReSharper disable once CheckNamespace
-namespace Poll.N.Quiz.Clients.Payloads;
+namespace Poll.N.Quiz.Infrastructure.Clients.Payloads;
 
 #region Settings API Payloads
 
 public sealed record GetAllSettingsMetadataResponse(IEnumerable<SettingsMetadataResponse> Metadata);
-public sealed record SettingsMetadataResponse(string ServiceName, IEnumerable<string> EnvironmentNames);
+public sealed record SettingsMetadataResponse(string ServiceName, string[] EnvironmentNames);
 
 public sealed record GetSettingsContentResponse(
     string JsonData,

@@ -8,14 +8,14 @@ internal class RedisReadOnlyKeyValueStorage(string connectionString) : IReadOnly
     private readonly ConnectionMultiplexer _connectionMultiplexer =
         ConnectionMultiplexer.Connect(connectionString, options =>{ options.AllowAdmin = true; });
 
-    async Task<bool> IReadOnlyKeyValueStorage.IsEmptyAsync()
+    public async Task<bool> IsEmptyAsync()
     {
         var database = _connectionMultiplexer.GetDatabase();
         var dbsize = await database.ExecuteAsync("DBSIZE");
         return dbsize.ToString() == "0";
     }
 
-    async Task<T?> IReadOnlyKeyValueStorage.GetAsync<T>(string key) where T : class
+    public async Task<T?> GetAsync<T>(string key) where T : class
     {
         var database = _connectionMultiplexer.GetDatabase();
         var redisValue = await database.StringGetAsync(key);
@@ -31,8 +31,8 @@ internal class RedisReadOnlyKeyValueStorage(string connectionString) : IReadOnly
         return JsonSerializer.Deserialize<T>(redisValue.ToString());
     }
 
-
-    async Task<IReadOnlyCollection<string>> IReadOnlyKeyValueStorage.ListAllKeysAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<string>> ListKeysAsync
+        (string keyPattern = "*", CancellationToken cancellationToken = default)
     {
         List<string> result = [];
 
@@ -44,7 +44,7 @@ internal class RedisReadOnlyKeyValueStorage(string connectionString) : IReadOnly
             var server = _connectionMultiplexer.GetServer(endpoint);
 
             await foreach (var key in
-                           server.KeysAsync(pattern: "*").WithCancellation(cancellationToken))
+                           server.KeysAsync(pattern: keyPattern).WithCancellation(cancellationToken))
             {
                 result.Add(key.ToString());
             }

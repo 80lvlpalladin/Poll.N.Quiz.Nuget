@@ -6,7 +6,7 @@ internal class RedisReadOnlySettingsProjectionStore(IReadOnlyKeyValueStorage red
     : IReadOnlySettingsProjectionStore
 {
     private static string CreateRedisKey(SettingsMetadata settingsMetadata) =>
-        $"{settingsMetadata.ServiceName}__{settingsMetadata.EnvironmentName}";
+        $"{settingsMetadata.ServiceName.ToLowerInvariant()}__{settingsMetadata.EnvironmentName.ToLowerInvariant()}";
 
     private static SettingsMetadata DeconstructRedisKey(string key)
     {
@@ -21,12 +21,17 @@ internal class RedisReadOnlySettingsProjectionStore(IReadOnlyKeyValueStorage red
         return redisStorage.GetAsync<SettingsProjection>(redisKey);
     }
 
-    public async Task<IReadOnlyCollection<SettingsMetadata>> GetAllSettingsMetadataAsync
-        (CancellationToken cancellationToken = default)
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public async Task<IReadOnlyCollection<SettingsMetadata>> GetSettingsMetadataAsync
+        (string? serviceName = null, CancellationToken cancellationToken = default)
     {
-        var allKeys = await redisStorage.ListAllKeysAsync(cancellationToken);
+        var keyPrefix = serviceName is null ? "*" : $"{serviceName}__*";
 
-        return allKeys
+        var keys = await redisStorage.ListKeysAsync(keyPrefix, cancellationToken);
+
+        return keys
             .Select(DeconstructRedisKey)
             .ToArray();
     }

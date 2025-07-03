@@ -6,8 +6,11 @@ public interface IReadOnlySettingsProjectionStore
 {
     public Task<SettingsProjection?> GetAsync(SettingsMetadata settingsMetadata);
 
-    public Task<IReadOnlyCollection<SettingsMetadata>> GetAllSettingsMetadataAsync
-        (CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Retrieves settings metadata for a service / all services.
+    /// </summary>
+    public Task<IReadOnlyCollection<SettingsMetadata>> GetSettingsMetadataAsync
+        (string? serviceName = null, CancellationToken cancellationToken = default);
 
     public Task<bool> IsEmptyAsync();
 }

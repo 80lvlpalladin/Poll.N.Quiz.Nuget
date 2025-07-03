@@ -1,4 +1,4 @@
-namespace Poll.N.Quiz.ServiceDiscovery;
+namespace Poll.N.Quiz.Infrastructure.ServiceDiscovery;
 
 public enum AspireResource
 {
@@ -6,5 +6,6 @@ public enum AspireResource
     SettingsProjectionStore = 10,
     SettingsEventQueue = 20,
     SettingsApi = 30,
-    SettingsWeb = 40
+    SettingsWeb = 40,
+    Api = 50
 }

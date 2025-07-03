@@ -14,4 +14,7 @@
 
 
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Poll.N.Quiz.Infrastructure.Clients\Poll.N.Quiz.Infrastructure.Clients.csproj" />
+  </ItemGroup>
 </Project>

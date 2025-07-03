@@ -2,7 +2,7 @@
   <Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props" />
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.0.70-dev</Version>
+    <Version>0.0.0.77-dev</Version>
     <Authors>80lvlpalladin</Authors>
   </PropertyGroup>
 </Project>

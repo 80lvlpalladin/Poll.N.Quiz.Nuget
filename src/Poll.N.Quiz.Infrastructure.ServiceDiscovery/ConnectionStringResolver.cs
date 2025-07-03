@@ -1,12 +1,11 @@
-namespace Poll.N.Quiz.ServiceDiscovery;
+namespace Poll.N.Quiz.Infrastructure.ServiceDiscovery;
 
 public class ConnectionStringResolver
 {
     private static readonly Dictionary<AspireResource, string> HardcodedConnectionStrings = new()
     {
-        {
-           AspireResource.SettingsApi, "https://localhost:5128"
-        }
+        { AspireResource.SettingsApi, "https://localhost:5128" },
+        { AspireResource.Api, "https://localhost:5177" }
     };
 
     public static string GetHardcodedConnectionString(AspireResource resource)
@@ -20,9 +19,9 @@ public class ConnectionStringResolver
             $"No hardcoded connection string found for resource: {resource}");
     }
 
-    public static string GetSettingsWebConnectionString()
+    public static string GetDotNetConnectionStringFromEnvironment(AspireResource resource)
     {
-        const string environmentVariableName = $"services__{nameof(AspireResource.SettingsWeb)}__https__0";
+        var environmentVariableName = $"services__{resource}__https__0";
 
         var connectionString = Environment.GetEnvironmentVariable(environmentVariableName);
 
